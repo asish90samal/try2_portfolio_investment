@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Funds</title>
+</head>
+<body>
+
+<h2>💳 Dummy Payment Gateway</h2>
+
+<input id="amount" placeholder="Enter amount">
+<button onclick="pay()">Pay</button>
+
+<p id="msg"></p>
+
+<script>
+    <script>
+
+    function loadBalance() {
+        fetch("http://localhost:8080/api/payment/balance")
+            .then(r => r.text())
+            .then(b => {
+                document.getElementById("balance").innerText =
+                    "Current Balance: ₹" + b;
+            });
+    }
+
+    loadBalance();
+
+
+function pay() {
+        const amt = document.getElementById("amount").value;
+
+        fetch(`http://localhost:8080/api/payment/add?amount=${amt}`, {
+            method: "POST"
+        })
+        .then(r => r.text())
+        .then(t => document.getElementById("msg").innerText = t);
+    }
+</script>
+
+</body>
+</html>

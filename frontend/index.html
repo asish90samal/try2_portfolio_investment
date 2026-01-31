@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="header">📈 Stocks</div>
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-title">Wallet Balance</div>
+        <div class="value" id="wallet">₹0</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">NIFTY 50</div>
+        <div class="value negative">25,320.65 −98.25 (0.39%)</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">SENSEX</div>
+        <div class="value negative">82,269.78 −296.59 (0.36%)</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Search Stock</div>
+        <input id="symbol" placeholder="TCS.NS">
+        <button onclick="openStock()">Open Stock</button>
+    </div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
