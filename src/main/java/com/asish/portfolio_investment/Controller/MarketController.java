@@ -3,40 +3,25 @@ package com.asish.portfolio_investment.Controller;
 
 
 import com.asish.portfolio_investment.Service.MarketDataService;
+import com.asish.portfolio_investment.dto.MarketPriceResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/market")
-@CrossOrigin
 public class MarketController {
 
-    private final MarketDataService marketDataService;
+    @Autowired
+    private MarketDataService marketDataService;
 
-    public MarketController(MarketDataService marketDataService) {
-        this.marketDataService = marketDataService;
-    }
-
-    /* ================= LIVE PRICE ================= */
-    @GetMapping("/price")
-    public Map<String, Object> getLivePrice(
+    @GetMapping("/live")
+    public ResponseEntity<MarketPriceResponseDTO> getLiveMarketPrice(
             @RequestParam String symbol) {
-        return marketDataService.getLivePrice(symbol);
-    }
 
-    /* ================= INDICES ================= */
-    @GetMapping("/indices")
-    public List<Map<String, Object>> getIndices() {
-        return marketDataService.getIndices();
-    }
+        MarketPriceResponseDTO response =
+                marketDataService.getLivePrice(symbol);
 
-    /* ================= HISTORICAL CHART ================= */
-    @GetMapping("/history")
-    public List<Map<String, Object>> getHistory(
-            @RequestParam String symbol,
-            @RequestParam String range) {
-        return marketDataService.getHistory(symbol, range);
+        return ResponseEntity.ok(response);
     }
 }

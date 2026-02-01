@@ -3,10 +3,11 @@ package com.asish.portfolio_investment.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "holdings")
-public class Holding {
+@Table(name = "trades")
+public class Trade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,15 +17,28 @@ public class Holding {
     private String symbol;
 
     @Column(nullable = false)
+    private double price;
+
+    @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)
-    private double averagePrice;
+    private String type; // BUY or SELL
+
+    @Column(nullable = false)
+    private LocalDateTime tradeTime;
 
     @ManyToOne
-    @JoinColumn(name = "portfolio_id")
     @JsonIgnore
+    //private Portfolio portfolio;
+
     private Portfolio portfolio;
+
+    // 🔹 Automatically set trade time
+    @PrePersist
+    public void onCreate() {
+        this.tradeTime = LocalDateTime.now();
+    }
 
     // ===== Getters & Setters =====
 
@@ -40,6 +54,14 @@ public class Holding {
         this.symbol = symbol;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -48,12 +70,16 @@ public class Holding {
         this.quantity = quantity;
     }
 
-    public double getAveragePrice() {
-        return averagePrice;
+    public String getType() {
+        return type;
     }
 
-    public void setAveragePrice(double averagePrice) {
-        this.averagePrice = averagePrice;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getTradeTime() {
+        return tradeTime;
     }
 
     public Portfolio getPortfolio() {

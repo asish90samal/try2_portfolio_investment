@@ -4,8 +4,10 @@ package com.asish.portfolio_investment.Entity;
 
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "portfolios")
 public class Portfolio {
 
     @Id
@@ -13,14 +15,46 @@ public class Portfolio {
     private Long id;
 
     private String name;
-    private double balance;
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public double getBalance() { return balance; }
+    @Column(nullable = false)
+    private double cashBalance;
 
-    public void setName(String name) { this.name = name; }
-    public void setBalance(double balance) { this.balance = balance; }
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    private List<Holding> holdings;
+
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    private List<Trade> trades;
+
+    // ===== Getters & Setters =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getCashBalance() {
+        return cashBalance;
+    }
+
+    public void setCashBalance(double cashBalance) {
+        this.cashBalance = cashBalance;
+    }
+
+    public List<Holding> getHoldings() {
+        return holdings;
+    }
+
+    public List<Trade> getTrades() {
+        return trades;
+    }
 }
+
 
 

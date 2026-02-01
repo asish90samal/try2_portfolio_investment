@@ -2,25 +2,24 @@ package com.asish.portfolio_investment.Controller;
 
 
 
+import com.asish.portfolio_investment.Entity.Trade;
 import com.asish.portfolio_investment.Service.TradeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/trade")
-@CrossOrigin
+@RequestMapping("/api/trades")
 public class TradeController {
 
-    private final TradeService service;
-
-    public TradeController(TradeService service) {
-        this.service = service;
-    }
+    @Autowired
+    private TradeService tradeService;
 
     @PostMapping("/buy")
-    public String buy(
+    public Trade buyAsset(
             @RequestParam Long portfolioId,
             @RequestParam String symbol,
-            @RequestParam int qty) {
-        return service.buyStock(portfolioId, symbol, qty);
+            @RequestParam int quantity) {
+
+        return tradeService.buyAsset(portfolioId, symbol, quantity);
     }
 }

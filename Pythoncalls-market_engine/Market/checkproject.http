@@ -1,0 +1,42 @@
+### create a portfolio
+
+POST http://localhost:8080/api/portfolios?name=LongTerm&amount=100000
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "LongTerm",
+  "balance": 100000
+}
+
+### buy a stock
+POST http://localhost:8080/api/trades/buy?portfolioId=1&symbol=TCS&quantity=2
+
+### check portfolio holding
+GET http://localhost:8080/api/trades/portfolios/1
+
+###
+GET http://localhost:8080/api/portfolios/1/trades
+
+### what if
+POST http://localhost:8080/api/portfolio/what-if
+Content-Type: application/json
+
+{
+  "symbol": "TCS",
+  "amount": 10000,
+  "date": "2020-01-01"
+}
+
+### ask ai
+POST http://localhost:8080/api/portfolio/ai-chat
+Content-Type: application/json
+
+{
+  "question": "Is my portfolio suitable for long-term investing?",
+  "holdings": [
+    { "symbol": "TCS", "amount": 20000 },
+    { "symbol": "INFY", "amount": 15000 },
+    { "symbol": "RELIANCE", "amount": 25000 }
+  ]
+}
