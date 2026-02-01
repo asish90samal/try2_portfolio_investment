@@ -4,6 +4,7 @@ package com.asish.portfolio_investment.Controller;
 import com.asish.portfolio_investment.Service.PortfolioAnalyticsService;
 import com.asish.portfolio_investment.dto.AIChatRequestDTO;
 import com.asish.portfolio_investment.dto.PortfolioHealthRequestDTO;
+import com.asish.portfolio_investment.dto.PortfolioPnLDTO;
 import com.asish.portfolio_investment.dto.WhatIfRequestDTO;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;
@@ -65,6 +66,21 @@ public class PortfolioAnalyticsController {
 
         return service.aiChat(json);
     }
+    @GetMapping("/{id}/pnl")
+    public PortfolioPnLDTO getPortfolioPnL(@PathVariable Long id) {
+        return service.calculatePortfolioPnL(id);
+    }
+    @PostMapping(
+            value = "/diversity",
+            consumes = "application/json",
+            produces = "application/json"
+    )
+    public String portfolioDiversity(
+            @RequestBody String requestJson) {
+
+        return service.getPortfolioDiversity(requestJson);
+    }
+
 
 
 

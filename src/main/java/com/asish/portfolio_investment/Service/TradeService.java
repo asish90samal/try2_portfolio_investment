@@ -77,6 +77,55 @@ public class TradeService {
         return trade;
     }
 
+    @Transactional
+    public Trade sellAsset(Long portfolioId, String symbol, int quantity) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        Holding holding = holdingRepository
+                .findByPortfolioAndSymbol(portfolio, symbol)
+                .orElseThrow(() -> new RuntimeException("No holding found"));
+
+        if (holding.getQuantity() < quantity) {
+            throw new RuntimeException("Not enough quantity to sell");
+        }
+
+        MarketPriceResponseDTO marketPrice =
+                marketDataService.getLivePrice(symbol);
+
+        double sellPrice = marketPrice.getPrice();
+        double totalValue = sellPrice * quantity;
+
+        // Add cash
+        portfolio.setCashBalance(
+                portfolio.getCashBalance() + totalValue
+        );
+
+        // Reduce holding
+        holding.setQuantity(holding.getQuantity() - quantity);
+
+        if (holding.getQuantity() == 0) {
+            holdingRepository.delete(holding);
+        } else {
+            holdingRepository.save(holding);
+        }
+
+        // Save trade
+        Trade trade = new Trade();
+        trade.setSymbol(symbol);
+        trade.setPrice(sellPrice);
+        trade.setQuantity(quantity);
+        trade.setType("SELL");
+        trade.setPortfolio(portfolio);
+
+        tradeRepository.save(trade);
+        portfolioRepository.save(portfolio);
+
+        return trade;
+    }
+
+
 
     public List<Trade> getTradesByPortfolio(Long portfolioId) {
 
@@ -85,6 +134,7 @@ public class TradeService {
 
         return tradeRepository.findByPortfolio(portfolio);
     }
+
 
 }
 

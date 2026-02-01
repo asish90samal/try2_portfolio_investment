@@ -170,5 +170,25 @@ def health_label(score):
     else:
         return "POOR"
 
+from analytics.performance_service import portfolio_performance
+
+@app.route("/portfolio/performance", methods=["POST"])
+def portfolio_performance_api():
+    data = request.get_json()
+
+    return jsonify(
+        portfolio_performance(
+            data["holdings"],
+            data.get("range", "1M")
+        )
+    )
+
+from analytics.diversity_service import diversity_report
+
+@app.route("/portfolio/diversity", methods=["POST"])
+def portfolio_diversity():
+    data = request.get_json()
+    return jsonify(diversity_report(data["holdings"]))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -1,49 +1,37 @@
+
 package com.asish.portfolio_investment.Entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "trades")
 public class Trade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String symbol;
-
-    @Column(nullable = false)
-    private double price;
-
-    @Column(nullable = false)
     private int quantity;
-
-    @Column(nullable = false)
-    private String type; // BUY or SELL
-
-    @Column(nullable = false)
-    private LocalDateTime tradeTime;
+    private double price;
+    private String type; // BUY / SELL
 
     @ManyToOne
-    @JsonIgnore
-    //private Portfolio portfolio;
-
     private Portfolio portfolio;
 
-    // 🔹 Automatically set trade time
+    private LocalDateTime createdAt;
+
     @PrePersist
     public void onCreate() {
-        this.tradeTime = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
-
-    // ===== Getters & Setters =====
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSymbol() {
@@ -52,14 +40,6 @@ public class Trade {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public int getQuantity() {
@@ -78,8 +58,16 @@ public class Trade {
         this.type = type;
     }
 
-    public LocalDateTime getTradeTime() {
-        return tradeTime;
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Portfolio getPortfolio() {
@@ -88,5 +76,10 @@ public class Trade {
 
     public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
+    }
+
+    // getters & setters
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

@@ -1,8 +1,11 @@
 package com.asish.portfolio_investment.Service;
 
 
+import com.asish.portfolio_investment.Entity.Holding;
 import com.asish.portfolio_investment.Entity.Portfolio;
+import com.asish.portfolio_investment.Repository.HoldingRepository;
 import com.asish.portfolio_investment.Repository.PortfolioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,10 @@ import java.util.List;
 
 @Service
 public class PortfolioService {
+
+    @Autowired
+    private HoldingRepository holdingRepository;
+
 
     @Autowired
     private PortfolioRepository portfolioRepository;
@@ -22,6 +29,19 @@ public class PortfolioService {
 
         return portfolioRepository.save(portfolio);
     }
+    @Transactional
+    public void deletePortfolio(Long portfolioId) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        if (!portfolio.getHoldings().isEmpty()) {
+            throw new RuntimeException("Cannot delete portfolio with holdings");
+        }
+
+        portfolioRepository.delete(portfolio);
+    }
+
 
     public Portfolio addFunds(Long portfolioId, double amount) {
 
@@ -38,5 +58,15 @@ public class PortfolioService {
     public List<Portfolio> getAllPortfolios() {
         return portfolioRepository.findAll();
     }
+
+    public List<Holding> getHoldings(Long portfolioId) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        return holdingRepository.findByPortfolio(portfolio);
+    }
+
+
 
 }
