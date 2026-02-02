@@ -3,6 +3,7 @@ package com.asish.portfolio_investment.Entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -20,9 +21,11 @@ public class Portfolio {
     private double cashBalance;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Holding> holdings;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Trade> trades;
 
     // ===== Getters & Setters =====

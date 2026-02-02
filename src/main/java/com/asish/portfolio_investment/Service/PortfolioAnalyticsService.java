@@ -14,7 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PortfolioAnalyticsService {
@@ -131,6 +134,142 @@ public class PortfolioAnalyticsService {
                 String.class
         );
     }
+    public String healthByPortfolioId(Long portfolioId) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        List<Holding> holdings =
+                holdingRepository.findByPortfolio(portfolio);
+
+        List<Map<String, Object>> payload = holdings.stream()
+                .map(h -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("symbol", h.getSymbol());
+                    map.put("amount", h.getQuantity() * h.getAveragePrice());
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+
+        Map<String, Object> body = Map.of("holdings", payload);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, headers);
+
+        return restTemplate.postForObject(
+                PYTHON_BASE + "/portfolio/health",
+                entity,
+                String.class
+        );
+    }
+
+    public String riskByPortfolioId(Long portfolioId) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        List<Holding> holdings =
+                holdingRepository.findByPortfolio(portfolio);
+
+        List<Map<String, Object>> payload = holdings.stream()
+                .map(h -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("symbol", h.getSymbol());
+                    map.put("amount", h.getQuantity() * h.getAveragePrice());
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+
+        Map<String, Object> body = Map.of("holdings", payload);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, headers);
+
+        return restTemplate.postForObject(
+                PYTHON_BASE + "/portfolio/risk",
+                entity,
+                String.class
+        );
+    }
+    public String diversityByPortfolioId(Long portfolioId) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        List<Holding> holdings =
+                holdingRepository.findByPortfolio(portfolio);
+
+        List<Map<String, Object>> payload = holdings.stream()
+                .map(h -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("symbol", h.getSymbol());
+                    map.put("amount", h.getQuantity() * h.getAveragePrice());
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+        Map<String, Object> body = Map.of("holdings", payload);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, headers);
+
+        return restTemplate.postForObject(
+                PYTHON_BASE + "/portfolio/diversity",
+                entity,
+                String.class
+        );
+    }
+    public String aiChatByPortfolioId(Long portfolioId, String question) {
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        List<Holding> holdings =
+                holdingRepository.findByPortfolio(portfolio);
+
+        List<Map<String, Object>> payload = holdings.stream()
+                .map(h -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("symbol", h.getSymbol());
+                    map.put("amount", h.getQuantity() * h.getAveragePrice());
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+
+        Map<String, Object> body = Map.of(
+                "question", question,
+                "holdings", payload
+        );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, headers);
+
+        return restTemplate.postForObject(
+                PYTHON_BASE + "/portfolio/ai-chat",
+                entity,
+                String.class
+        );
+    }
+
+
+
+
+
 
 
 
