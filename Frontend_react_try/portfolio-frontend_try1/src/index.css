@@ -3,15 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* REQUIRED for border-border */
-    --border: 214 32% 91%;
-  }
-
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-zen-gray-950 text-white font-sans antialiased;
     background-image: 
