@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* REQUIRED for border-border */
+    --border: 214 32% 91%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-zen-gray-950 text-white font-sans antialiased;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(244, 63, 94, 0.05) 0%, transparent 50%);
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .glass-card {
+    @apply glass rounded-2xl p-6 hover:bg-white/[0.07] transition-all duration-300;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-indigo-night-400 via-sakura-400 to-indigo-night-500 bg-clip-text text-transparent;
+  }
+  
+  .neon-border {
+    @apply border-2 border-indigo-night-500 shadow-lg shadow-indigo-night-500/50;
+  }
+  
+  .floating-orb {
+    @apply absolute rounded-full blur-3xl opacity-20 animate-float;
+  }
+  
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-zen-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-indigo-night-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-indigo-night-500;
+}
+
+/* Chart styling */
+.recharts-surface {
+  @apply rounded-lg;
+}
+
+/* Number animation */
+@keyframes countup {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.count-up {
+  animation: countup 0.5s ease-out;
+}
+
+/* Pulse animation for live data */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+  }
+}
+
+.live-indicator {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Japanese wave pattern background */
+.wave-pattern {
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(99, 102, 241, 0.03) 10px,
+      rgba(99, 102, 241, 0.03) 20px
+    );
+}
+
+/* Glow effect for important elements */
+.glow-on-hover {
+  transition: all 0.3s ease;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.6),
+              0 0 60px rgba(99, 102, 241, 0.4),
+              inset 0 0 20px rgba(99, 102, 241, 0.2);
+}
