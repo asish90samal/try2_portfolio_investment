@@ -82,6 +82,14 @@ public class PortfolioController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(csv.toString());
     }
+    @PostMapping("/{id}/withdraw-funds")
+    public Portfolio withdrawFunds(
+            @PathVariable Long id,
+            @RequestParam double amount) {
+
+        return portfolioService.withdrawFunds(id, amount);
+    }
+
 
 
 }

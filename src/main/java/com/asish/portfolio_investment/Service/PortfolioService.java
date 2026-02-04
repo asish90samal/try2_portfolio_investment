@@ -66,6 +66,25 @@ public class PortfolioService {
 
         return holdingRepository.findByPortfolio(portfolio);
     }
+    public Portfolio withdrawFunds(Long portfolioId, double amount) {
+
+        if (amount <= 0) {
+            throw new RuntimeException("Withdrawal amount must be positive");
+        }
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+
+        if (portfolio.getCashBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+
+        portfolio.setCashBalance(
+                portfolio.getCashBalance() - amount
+        );
+
+        return portfolioRepository.save(portfolio);
+    }
 
 
 

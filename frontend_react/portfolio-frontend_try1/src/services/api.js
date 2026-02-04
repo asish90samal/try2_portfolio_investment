@@ -69,6 +69,10 @@ export const portfolioAPI = {
     api.get(`/portfolios/statement/csv/${id}`, {
       responseType: "blob",
     }),
+
+    withdrawFunds: (id, amount) =>
+  api.post(`/portfolios/${id}/withdraw-funds?amount=${amount}`),
+
 };
 
 /**
@@ -169,5 +173,6 @@ export const aiAPI = {
       question,
     }),
 };
+
 
 export default api;
